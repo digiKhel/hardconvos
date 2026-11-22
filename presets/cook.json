@@ -1,8 +1,36 @@
 {
   "format": "hardconvos-person-v1",
   "name": "Cook",
-  "context": "",
-  "anecdotes": [],
-  "question_focus": "",
-  "questions": []
+  "context": "My maid is 55 years old, from Uttar Pradesh. She has been cooking with us for over 3 months. She says she knows how to cook South indian food, but she doesn't. She's good with UP cuisine like cholle, ghugni, parathas etc. Her dosa and chutney are great.\n\nShe tends to respond in a defensive manner, in the moment. However, she is diligent in her work and tries to correct it over the next few days. She invariably slips.",
+  "anecdotes": [
+    "Two weeks ago, we asked her to make dal and to keep it less watery. She said ok. Finally her dal was still quite watery, and she said it's lesser than before. She spoke in a slightly agitated voice.",
+    "A month ago, she said she can make very good South Indian food, very confidently. Turns out her chutney and dosa is great, but her pongal was quite bad. When we told her the pongal sohuld be less watery and more spicy, she said that's exactly how others like it. She wasn't very happy and was banging the cooking utensils very hard."
+  ],
+  "question_focus": "On how our responses to her when giving feedback are.",
+  "questions": [
+    {
+      "question": "When you give the Cook feedback gently with a compliment first, like praising her dosa, does she soften, or still get defensive about the criticism?",
+      "answer": "softens"
+    },
+    {
+      "question": "If you calmly push back after she says the dal is 'lesser than before', what does the Cook do next: argue, go quiet, or bang utensils?",
+      "answer": "goes quiet but bangs utensils"
+    },
+    {
+      "question": "How does the Cook react if you show her exactly what you want, like cooking pongal beside her, rather than telling her?",
+      "answer": "she watches but cant replicate"
+    },
+    {
+      "question": "When the Cook says 'that's how others like it', what happens if you acknowledge that before restating your preference? Does she accept it?",
+      "answer": "we dont acknowledge it, because we think she's lying"
+    },
+    {
+      "question": "When the Cook slips back after correcting something for a few days, how does she respond if you raise it again? Hurt, irritated, or apologetic?",
+      "answer": "apologetic"
+    },
+    {
+      "question": "If you thank the Cook warmly for improving a dish, how does she take it? Does appreciation change how she handles your next piece of feedback?",
+      "answer": "she takes it well. that day's dish is made well."
+    }
+  ]
 }
