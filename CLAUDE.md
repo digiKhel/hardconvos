@@ -31,10 +31,9 @@ A minimalist, mobile-friendly, responsive website. From top to bottom:
 
 1. A row of people avatars, with an icon to add a person to chat with. The first avatar is "Me", which opens settings about the user.
 2. A row of pills (Chat 1, Chat 2, etc.), with a + to start a conversation. The leftmost button opens settings for the selected person.
-3. When a person and one of their chats are selected, a text box to enter text, with a button to its left that opens settings for that chat.
-4. Below the text box, the conversation so far, in standard messaging-app bubbles, newest first.
-
-The text box sits above the conversation on purpose.
+3. The conversation so far, in standard messaging-app bubbles, newest at the bottom.
+4. An AI feedback button.
+5. When a person and one of their chats are selected, a text box at the bottom, with a button to its left that opens settings for that chat.
 
 ## Feature status
 
@@ -49,8 +48,7 @@ The text box sits above the conversation on purpose.
 - Questions are generated on request, after an optional prompt on what to prod the user about.
 - In-character replies (`app/api/reply`), built from all three profiles. Each has a non-verbal cue in italics above it. Claude steps out of character only if the user seems to be in real danger.
 
-**In the brief, not built yet**
-- Afterwards, say what landed well and what might have sounded harsh.
+- AI feedback (`app/api/feedback`): a button under the conversation gives an opinion on it so far, with what landed well and what to do differently. A mark beside each of the user's messages opens what went wrong and what they could have said. Messages that led to a safety pause are never coached.
 
 **Chosen for a later step**
 - Tune the person: how they usually react (defensive, dismissive, emotional, goes quiet) and how hard the rehearsal is.
@@ -74,7 +72,7 @@ These are available, not required. Only Claude is integrated so far (`lib/claude
 - `components/`: interface components
 - `lib/workspace.ts`: data model and state updates
 - `lib/useWorkspace.ts`: browser persistence
-- `npm run dev`: run locally on port 3000
+- `npm run dev`: run locally on port 3000. Check the browser console here after UI changes: production builds hide React's key errors.
 - `npm run build` and `npm run typecheck`: run both before pushing
 - Hosting: https://hardconvos.vercel.app on Vercel, deployed manually with the CLI. Pushing to GitHub does not deploy.
 

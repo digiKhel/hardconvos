@@ -5,9 +5,11 @@ import { AddPersonDialog } from "@/components/AddPersonDialog";
 import { ChatPills } from "@/components/ChatPills";
 import { Composer } from "@/components/Composer";
 import { ExportContext } from "@/components/ExportContext";
+import { FeedbackDialog } from "@/components/FeedbackDialog";
 import { PeopleRow } from "@/components/PeopleRow";
 import { SettingsDialog } from "@/components/SettingsDialog";
 import { Thread } from "@/components/Thread";
+import { useFeedback } from "@/lib/useFeedback";
 import { useReplies } from "@/lib/useReplies";
 import { useWorkspace } from "@/lib/useWorkspace";
 import {
@@ -16,6 +18,7 @@ import {
   addMessage,
   addPerson,
   emptyProfile,
+  reviewableIds,
   selectChat,
   updateChatProfile,
   updateProfile,
@@ -28,8 +31,10 @@ export default function Home() {
   const { workspace, setWorkspace, ready } = useWorkspace();
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState<SettingsKind | null>(null);
+  const [showingFeedback, setShowingFeedback] = useState(false);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const { typing, errors, requestReply } = useReplies(setWorkspace);
+  const { reviewing, feedbackErrors, requestFeedback } = useFeedback(setWorkspace);
 
   if (!ready) return <main className="app" />;
 
@@ -37,6 +42,14 @@ export default function Home() {
   const person = workspace.people.find((p) => p.id === workspace.selectedPersonId);
   const chat = person?.chats.find((c) => c.id === person.selectedChatId);
   const closeSettings = () => setEditing(null);
+
+  const feedbackOutOfDate = !!chat && chat.feedback?.through !== chat.messages.at(-1)?.id;
+
+  function openFeedback() {
+    if (!person || !chat) return;
+    setShowingFeedback(true);
+    if (!chat.feedback || feedbackOutOfDate) void requestFeedback(person, chat, self);
+  }
 
   function send() {
     if (!person || !chat || typing[chat.id]) return;
@@ -66,6 +79,26 @@ export default function Home() {
 
       {person && chat ? (
         <section className="conversation" key={`chat-${chat.id}`}>
+          <Thread
+            name={person.name}
+            messages={chat.messages}
+            typing={!!typing[chat.id]}
+            error={errors[chat.id]}
+            onRetry={() => requestReply(person, chat, self, chat.messages)}
+            feedback={chat.feedback}
+            reviewing={!!reviewing[chat.id]}
+            feedbackError={feedbackErrors[chat.id]}
+            onFeedback={() => requestFeedback(person, chat, self)}
+          />
+          <footer className="feedback-bar">
+            <button
+              className="feedback-button"
+              onClick={openFeedback}
+              disabled={!!typing[chat.id] || !reviewableIds(chat.messages).size}
+            >
+              {reviewing[chat.id] ? "Getting feedback…" : "AI feedback"}
+            </button>
+          </footer>
           <Composer
             recipient={person.name}
             busy={!!typing[chat.id]}
@@ -73,13 +106,6 @@ export default function Home() {
             onChange={(text) => setDrafts((d) => ({ ...d, [chat.id]: text }))}
             onSend={send}
             onSettings={() => setEditing("chat")}
-          />
-          <Thread
-            name={person.name}
-            messages={chat.messages}
-            typing={!!typing[chat.id]}
-            error={errors[chat.id]}
-            onRetry={() => requestReply(person, chat, self, chat.messages)}
           />
         </section>
       ) : (
@@ -120,6 +146,19 @@ export default function Home() {
           personProfile={person.profile}
           onChange={(update) => setWorkspace((w) => updateChatProfile(w, person.id, chat.id, update))}
           onClose={closeSettings}
+        />
+      )}
+
+      {showingFeedback && person && chat && (
+        <FeedbackDialog
+          key={`feedback-${chat.id}`}
+          name={person.name}
+          feedback={chat.feedback}
+          outOfDate={feedbackOutOfDate}
+          busy={!!reviewing[chat.id]}
+          error={feedbackErrors[chat.id]}
+          onRefresh={() => requestFeedback(person, chat, self)}
+          onClose={() => setShowingFeedback(false)}
         />
       )}
 

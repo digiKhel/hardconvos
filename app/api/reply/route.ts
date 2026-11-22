@@ -1,13 +1,10 @@
-import { askClaude, claudeFailure, clip, fail, fromThisSite, readProfile } from "@/lib/claude";
+import { askClaude, claudeFailure, clip, data, fail, fromThisSite, readMessage, readProfile } from "@/lib/claude";
 import { LIMITS } from "@/lib/limits";
 import type { NewMessage } from "@/lib/workspace";
 
 export const maxDuration = 60;
 
 type Notes = ReturnType<typeof readProfile>;
-
-// Escaped so that notes can't close the tags they sit in.
-const data = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
 
 const systemPrompt = (name: string, person: Notes, chat: Notes, self: Notes) => `You are playing ${data(name)}, a real person in the user's life, so that the user can rehearse a hard conversation with them before having it for real. The rehearsal only helps if you are believable: not a villain, and not a pushover.
 
@@ -53,11 +50,7 @@ const SCHEMA = {
 function readMessages(value: unknown) {
   const messages = (Array.isArray(value) ? value : [])
     .slice(-LIMITS.history)
-    .map((item): NewMessage => ({
-      from: item?.from === "them" || item?.from === "note" ? item.from : "me",
-      text: clip(item?.text, LIMITS.message),
-      cue: clip(item?.cue, LIMITS.cue),
-    }))
+    .map(readMessage)
     .filter((message) => message.text);
   // The API needs the history to open with the user.
   while (messages.length && messages[0].from !== "me") messages.shift();

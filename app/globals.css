@@ -88,8 +88,7 @@ svg { width: 22px; height: 22px; }
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
+  padding: 8px 12px 10px;
 }
 .composer .pill { flex-shrink: 0; }
 .composer textarea {
@@ -167,6 +166,62 @@ svg { width: 22px; height: 22px; }
 .unanswered { flex-shrink: 0; align-self: center; text-align: center; }
 .unanswered .error { margin-bottom: 4px; }
 .retry { min-height: 44px; padding: 0 18px; border-radius: 22px; background: var(--surface); }
+
+.message.me { max-width: 88%; }
+.message.open { width: 88%; }
+.said { max-width: 100%; display: flex; align-items: center; }
+.said .bubble { min-width: 0; }
+.indicator { flex-shrink: 0; width: 44px; height: 44px; padding: 0; display: grid; place-items: center; }
+.mark {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+.mark.landed, .mark.mixed, .mark.harsh { border: 0; color: #fff; }
+.mark.landed { background: #23804c; }
+.mark.mixed { background: #996300; }
+.mark.harsh { background: #c0362c; }
+
+.review {
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.review p { margin: 4px 0 0; }
+.review h4 { margin: 10px 0 0; color: var(--muted); font-size: 12px; font-weight: 600; }
+.review .say { padding-left: 10px; border-left: 2px solid var(--muted); font-style: italic; }
+.review .retry { margin-top: 8px; }
+
+.feedback-bar { flex-shrink: 0; padding: 8px 12px 0; border-top: 1px solid var(--line); }
+.feedback-button {
+  width: 100%;
+  height: 44px;
+  border-radius: 22px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+.points { padding: 14px 16px; overflow-wrap: anywhere; }
+.points h3 { margin: 0 0 8px; }
+.points p { margin: 0; }
+.points ul { margin: 0; padding-left: 20px; }
+.points li + li { margin-top: 8px; }
+.refresh { margin-bottom: 12px; }
+.stale { opacity: 0.5; }
+
+/* A short conversation sits at the bottom, against the composer. */
+.thread > :first-child:not(.empty) { margin-top: auto; }
 
 .empty { margin: auto; padding: 24px; color: var(--muted); text-align: center; }
 

@@ -13,12 +13,30 @@ export type NewMessage = Omit<Message, "id" | "sentAt">;
 /** The three things that have settings. All three share the Profile shape. */
 export type SettingsKind = "self" | "person" | "chat";
 
+export const VERDICTS = ["landed", "mixed", "harsh"] as const;
+export type Verdict = (typeof VERDICTS)[number];
+
+export type MessageReview = { verdict: Verdict; what: string; differently: string; say: string };
+
+export type Feedback = {
+  /** The last message that had been sent when this was written. */
+  through: string;
+  /** Set instead of coaching when the user may be in real danger. */
+  safety: string;
+  overall: string;
+  landed: string[];
+  differently: string[];
+  /** Keyed by message id. */
+  reviews: Record<string, MessageReview>;
+};
+
 export type Chat = {
   id: string;
   title: string;
   messages: Message[];
   /** What this conversation is about. Absent until its settings are first edited. */
   profile?: Profile;
+  feedback?: Feedback;
 };
 
 export type Profile = {
@@ -100,6 +118,33 @@ export function updateChatProfile(
   return updatePerson(workspace, personId, (person) => ({
     ...person,
     chats: person.chats.map((c) => (c.id === chatId ? { ...c, profile: update(c.profile ?? emptyProfile) } : c)),
+  }));
+}
+
+/** The user's messages that can be coached: all but those that led to a safety pause. */
+export function reviewableIds(messages: Pick<Message, "id" | "from">[]) {
+  const ids = new Set<string>();
+  let paused = false;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const { id, from } = messages[i];
+    if (from === "me") {
+      if (!paused) ids.add(id);
+    } else {
+      paused = from === "note";
+    }
+  }
+  return ids;
+}
+
+export function saveFeedback(workspace: Workspace, personId: string, chatId: string, feedback: Feedback): Workspace {
+  return updatePerson(workspace, personId, (person) => ({
+    ...person,
+    chats: person.chats.map((c) =>
+      c.id === chatId
+        ? // Long chats are reviewed on recent messages only, so keep older reviews.
+          { ...c, feedback: { ...feedback, reviews: { ...c.feedback?.reviews, ...feedback.reviews } } }
+        : c,
+    ),
   }));
 }
 

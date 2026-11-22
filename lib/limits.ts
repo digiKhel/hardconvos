@@ -12,4 +12,5 @@ export const LIMITS = {
   location: 300,
   focus: 500,
   cue: 300,
+  feedback: 1200,
 } as const;

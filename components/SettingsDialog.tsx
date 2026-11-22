@@ -295,7 +295,7 @@ export function SettingsDialog({ kind, name, profile, personProfile, toolbar, on
         </Section>
 
         <p className="privacy">
-          Saved in this browser as you type. Your notes and chats are sent to Claude to write questions and replies.
+          Saved in this browser as you type. Your notes and chats are sent to Claude to write questions, replies and feedback.
         </p>
       </div>
     </dialog>

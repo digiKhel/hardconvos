@@ -1,12 +1,21 @@
 // Server only: shared by the API routes that call Claude.
 import Anthropic from "@anthropic-ai/sdk";
 import { LIMITS } from "./limits";
+import type { Message } from "./workspace";
 
 export const fail = (message: string, status: number) => Response.json({ error: message }, { status });
 
 export const clip = (value: unknown, max: number) => (typeof value === "string" ? value.trim().slice(0, max) : "");
 
 const list = (value: unknown): any[] => (Array.isArray(value) ? value : []);
+
+/** Escaped so that notes can't close the tags they sit in. */
+export const data = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
+
+export function readMessage(item: any) {
+  const from: Message["from"] = item?.from === "them" || item?.from === "note" ? item.from : "me";
+  return { from, text: clip(item?.text, LIMITS.message), cue: clip(item?.cue, LIMITS.cue) };
+}
 
 /** Keeps other websites from spending the API key through visitors' browsers. */
 export function fromThisSite(request: Request) {
@@ -35,11 +44,14 @@ export function askClaude(params: {
   system: string;
   messages: Anthropic.Beta.BetaMessageParam[];
   schema?: Record<string, unknown>;
+  maxTokens?: number;
+  timeout?: number;
+  maxRetries?: number;
 }) {
-  const client = new Anthropic({ timeout: 25_000, maxRetries: 1 });
+  const client = new Anthropic({ timeout: params.timeout ?? 25_000, maxRetries: params.maxRetries ?? 1 });
   return client.beta.messages.create({
     model: "claude-opus-5-5",
-    max_tokens: 4000,
+    max_tokens: params.maxTokens ?? 4000,
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
     cache_control: { type: "ephemeral" },
