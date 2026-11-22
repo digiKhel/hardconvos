@@ -21,6 +21,19 @@ export const PlusIcon = () => (
   </svg>
 );
 
+export const SettingsIcon = () => (
+  <svg {...base}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M10 2.5h4l.6 2.6 1.8 1 2.5-.7 2 3.4-1.9 1.9v2.6l1.9 1.9-2 3.4-2.5-.7-1.8 1-.6 2.6h-4l-.6-2.6-1.8-1-2.5.7-2-3.4L5 13.3v-2.6L3.1 8.8l2-3.4 2.5.7 1.8-1z" />
+  </svg>
+);
+
+export const CloseIcon = () => (
+  <svg {...base}>
+    <path d="M6 6l12 12M18 6L6 18" />
+  </svg>
+);
+
 export const SendIcon = () => (
   <svg {...base}>
     <path d="M12 19V5M5 12l7-7 7 7" />

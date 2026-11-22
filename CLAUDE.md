@@ -13,7 +13,7 @@ Suggested and mentored by Nithin Rangarajan, VP Product, Chargebee.
 All times are IST on Sunday 22 November 2026.
 
 - 1:00 PM: four-hour buildathon opens (work on this repo began around 2:45 PM)
-- 4:00 PM: check-in with the mentor
+- 3:30 PM: check-in with the mentor (mentors are only there until 4:00 PM)
 - 5:00 PM: submissions lock
 - Deliverables: a deployed URL and a video
 - Details: https://unconference.theproductfolks.com/speedrun (requires sign-in; the rules and judging criteria have not been reviewed yet)
@@ -30,7 +30,7 @@ Check the clock before adding scope, and leave time to record the video and subm
 A minimalist, mobile-friendly, responsive website. From top to bottom:
 
 1. A row of people avatars, with an icon to add a person to chat with.
-2. A row of pills (Chat 1, Chat 2, etc.), with a + to start a conversation.
+2. A row of pills (Chat 1, Chat 2, etc.), with a + to start a conversation. The leftmost button opens settings for the selected person.
 3. When a person and one of their chats are selected, a text box to enter text.
 4. Below the text box, the conversation so far, in standard messaging-app style.
 
@@ -40,9 +40,10 @@ The text box sits above the conversation on purpose.
 
 **Built**
 - The interface above. People, chats and messages are saved in the browser's localStorage.
+- Person settings, in three sections: context, anecdotes of their past interactions (with the user or anyone else), and generated questions that probe how they would respond in different scenarios.
 
 **In the brief, not built yet**
-- Describe the situation and the person.
+- Describe the situation (the person is covered by settings).
 - The AI plays that person realistically.
 - Afterwards, say what landed well and what might have sounded harsh.
 
@@ -59,7 +60,7 @@ The text box sits above the conversation on purpose.
 - Claude
 - Descope, Figr, smallest.ai, Fireflies.ai, Apify, CodeRabbit, Crustdata, Divyam.ai, Plivo, Nebius Token Factory, Replit, ElevenLabs
 
-These are available, not required. None is integrated yet.
+These are available, not required. Only Claude is integrated so far (`app/api/questions`).
 
 ## Code
 

@@ -1,21 +1,32 @@
 import type { Person } from "@/lib/workspace";
-import { PlusIcon } from "./icons";
+import { PlusIcon, SettingsIcon } from "./icons";
 import { ScrollRow } from "./ScrollRow";
 
 type Props = {
   person: Person | undefined;
   onSelect: (chatId: string) => void;
   onAdd: () => void;
+  onSettings: () => void;
 };
 
-export function ChatPills({ person, onSelect, onAdd }: Props) {
+export function ChatPills({ person, onSelect, onAdd, onSettings }: Props) {
   return (
     <ScrollRow
       className="chats"
       label="Chats"
       selectedId={person?.selectedChatId}
+      lead={
+        <button
+          className="pill icon"
+          onClick={onSettings}
+          disabled={!person}
+          aria-label={person ? `Settings for ${person.name}` : "Person settings"}
+        >
+          <SettingsIcon />
+        </button>
+      }
       action={
-        <button className="pill add" onClick={onAdd} disabled={!person} aria-label="Start a conversation">
+        <button className="pill icon add" onClick={onAdd} disabled={!person} aria-label="Start a conversation">
           <PlusIcon />
         </button>
       }

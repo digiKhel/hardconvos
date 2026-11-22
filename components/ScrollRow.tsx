@@ -6,12 +6,14 @@ type Props = {
   className: string;
   label: string;
   selectedId: string | null | undefined;
+  /** Sits before the items, and stays put when they overflow. */
+  lead?: ReactNode;
   /** Sits after the items, and stays put when they overflow. */
   action: ReactNode;
   children: ReactNode;
 };
 
-export function ScrollRow({ className, label, selectedId, action, children }: Props) {
+export function ScrollRow({ className, label, selectedId, lead, action, children }: Props) {
   const items = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -22,6 +24,7 @@ export function ScrollRow({ className, label, selectedId, action, children }: Pr
 
   return (
     <nav className={`row ${className}`} aria-label={label}>
+      {lead}
       <div className="items" ref={items}>
         {children}
       </div>

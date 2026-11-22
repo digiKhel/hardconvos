@@ -5,13 +5,15 @@ import { AddPersonDialog } from "@/components/AddPersonDialog";
 import { ChatPills } from "@/components/ChatPills";
 import { Composer } from "@/components/Composer";
 import { PeopleRow } from "@/components/PeopleRow";
+import { PersonSettingsDialog } from "@/components/PersonSettingsDialog";
 import { Thread } from "@/components/Thread";
 import { useWorkspace } from "@/lib/useWorkspace";
-import { addChat, addMessage, addPerson, selectChat } from "@/lib/workspace";
+import { addChat, addMessage, addPerson, selectChat, updateProfile } from "@/lib/workspace";
 
 export default function Home() {
   const { workspace, setWorkspace, ready } = useWorkspace();
   const [adding, setAdding] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
 
   if (!ready) return <main className="app" />;
@@ -39,6 +41,7 @@ export default function Home() {
         person={person}
         onSelect={(id) => person && setWorkspace((w) => selectChat(w, person.id, id))}
         onAdd={() => person && setWorkspace((w) => addChat(w, person.id))}
+        onSettings={() => setEditing(true)}
       />
 
       {person && chat ? (
@@ -55,6 +58,15 @@ export default function Home() {
         <p className="empty">
           {person ? `Tap + to start a conversation with ${person.name}.` : "Add a person to chat with."}
         </p>
+      )}
+
+      {editing && person && (
+        <PersonSettingsDialog
+          key={person.id}
+          person={person}
+          onChange={(update) => setWorkspace((w) => updateProfile(w, person.id, update))}
+          onClose={() => setEditing(false)}
+        />
       )}
 
       {adding && (
