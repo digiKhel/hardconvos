@@ -64,6 +64,7 @@ svg { width: 22px; height: 22px; }
   font-weight: 600;
 }
 .avatar.add { border: 1.5px dashed var(--muted); color: var(--text); }
+.person.self .avatar { background: var(--accent); color: var(--on-accent); }
 .person[aria-pressed="true"] .avatar { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent); }
 .name {
   max-width: 100%;
@@ -90,6 +91,7 @@ svg { width: 22px; height: 22px; }
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
 }
+.composer .pill { flex-shrink: 0; }
 .composer textarea {
   flex: 1;
   min-width: 0;
@@ -136,7 +138,35 @@ svg { width: 22px; height: 22px; }
 }
 .me .bubble { background: var(--accent); color: var(--on-accent); border-bottom-right-radius: 4px; }
 .them .bubble { background: var(--surface); border-bottom-left-radius: 4px; }
+.cue { padding: 0 4px; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
 .message time { font-size: 11px; color: var(--muted); }
+
+.typing { display: flex; align-items: center; gap: 5px; height: 40px; }
+.typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: typing 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing {
+  0%, 60%, 100% { opacity: 0.35; }
+  30% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typing span { animation: none; }
+}
+
+.note {
+  flex-shrink: 0;
+  margin: 4px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.note strong { display: block; margin-bottom: 4px; }
+.unanswered { flex-shrink: 0; align-self: center; text-align: center; }
+.unanswered .error { margin-bottom: 4px; }
+.retry { min-height: 44px; padding: 0 18px; border-radius: 22px; background: var(--surface); }
 
 .empty { margin: auto; padding: 24px; color: var(--muted); text-align: center; }
 
@@ -239,11 +269,28 @@ svg { width: 22px; height: 22px; }
 }
 .field.context { min-height: 140px; }
 .item { margin-bottom: 16px; }
+.item.location { margin: 14px 0 0; }
+.field.line { min-height: 44px; }
+.focus { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.focus label { display: block; margin-bottom: 6px; font-size: 15px; }
+.focus .field { min-height: 64px; }
+.focus .secondary { margin-top: 8px; }
+.focus .hint, .focus .error { margin: 8px 0 0; }
 .item label { display: block; margin-bottom: 6px; font-size: 15px; }
 .item-head { display: flex; align-items: center; justify-content: space-between; }
 .item-head label { margin: 0; }
 .remove { width: 44px; height: 44px; flex-shrink: 0; color: var(--muted); }
 .secondary { width: 100%; min-height: 44px; padding: 8px 12px; border-radius: 22px; background: var(--surface); }
+.export { margin-bottom: 12px; }
+.export .hint { margin: 0 4px; }
+.export .field { margin-top: 8px; }
+.tick { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px; cursor: pointer; }
+.tick input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
+.import { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.import label { display: block; margin-bottom: 6px; font-size: 14px; color: var(--muted); }
+/* A long paste must not push Import off the screen. */
+.import .field { min-height: 72px; max-height: 20dvh; }
+.import .error { margin: 8px 0 0; }
 .privacy { margin: 14px 4px 0; color: var(--muted); font-size: 12px; }
 
 @media (min-width: 680px) {

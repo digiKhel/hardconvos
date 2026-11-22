@@ -29,10 +29,10 @@ Check the clock before adding scope, and leave time to record the video and subm
 
 A minimalist, mobile-friendly, responsive website. From top to bottom:
 
-1. A row of people avatars, with an icon to add a person to chat with.
+1. A row of people avatars, with an icon to add a person to chat with. The first avatar is "Me", which opens settings about the user.
 2. A row of pills (Chat 1, Chat 2, etc.), with a + to start a conversation. The leftmost button opens settings for the selected person.
-3. When a person and one of their chats are selected, a text box to enter text.
-4. Below the text box, the conversation so far, in standard messaging-app style.
+3. When a person and one of their chats are selected, a text box to enter text, with a button to its left that opens settings for that chat.
+4. Below the text box, the conversation so far, in standard messaging-app bubbles, newest first.
 
 The text box sits above the conversation on purpose.
 
@@ -40,11 +40,16 @@ The text box sits above the conversation on purpose.
 
 **Built**
 - The interface above. People, chats and messages are saved in the browser's localStorage.
-- Person settings, in three sections: context, anecdotes of their past interactions (with the user or anyone else), and generated questions that probe how they would respond in different scenarios.
+- Settings for three things, each in three sections (`components/SettingsDialog.tsx`):
+  - Me: context, anecdotes, and questions on how the user responds and feels in different conversations.
+  - Person: context, anecdotes of their past interactions (with the user or anyone else), and questions on how they would respond in different scenarios.
+  - Chat: the topic and location, recent interactions between the two, and questions on how those went (type of response, emotion shown).
+- Export context, in person settings: copies that person as text, optionally with their chats (`lib/transfer.ts`). It is pasted back through Add person. When adding a field to a person or chat, add it to the export and import too.
+- A built-in demo persona, Cook, is first after Me for every visitor (`lib/presets.ts`). Its content is `presets/cook.json`, in Export context's format. That file is public: fictional material only.
+- Questions are generated on request, after an optional prompt on what to prod the user about.
+- In-character replies (`app/api/reply`), built from all three profiles. Each has a non-verbal cue in italics above it. Claude steps out of character only if the user seems to be in real danger.
 
 **In the brief, not built yet**
-- Describe the situation (the person is covered by settings).
-- The AI plays that person realistically.
 - Afterwards, say what landed well and what might have sounded harsh.
 
 **Chosen for a later step**
@@ -60,7 +65,7 @@ The text box sits above the conversation on purpose.
 - Claude
 - Descope, Figr, smallest.ai, Fireflies.ai, Apify, CodeRabbit, Crustdata, Divyam.ai, Plivo, Nebius Token Factory, Replit, ElevenLabs
 
-These are available, not required. Only Claude is integrated so far (`app/api/questions`).
+These are available, not required. Only Claude is integrated so far (`lib/claude.ts`).
 
 ## Code
 
@@ -71,7 +76,7 @@ These are available, not required. Only Claude is integrated so far (`app/api/qu
 - `lib/useWorkspace.ts`: browser persistence
 - `npm run dev`: run locally on port 3000
 - `npm run build` and `npm run typecheck`: run both before pushing
-- Planned hosting: Vercel (not set up yet)
+- Hosting: https://hardconvos.vercel.app on Vercel, deployed manually with the CLI. Pushing to GitHub does not deploy.
 
 ## This repo is public
 

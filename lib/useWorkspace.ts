@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withPresets } from "./presets";
 import { emptyWorkspace, type Workspace } from "./workspace";
 
 const STORAGE_KEY = "hardconvos:v1";
@@ -11,12 +12,14 @@ export function useWorkspace() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    let initial = emptyWorkspace;
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
-      if (Array.isArray(saved?.people)) setWorkspace(saved);
+      if (Array.isArray(saved?.people)) initial = saved;
     } catch {
       // Storage is blocked or unreadable: start empty.
     }
+    setWorkspace(withPresets(initial));
     setReady(true);
   }, []);
 

@@ -7,4 +7,9 @@ export const LIMITS = {
   question: 500,
   answer: 1500,
   answered: 30,
+  message: 2000,
+  history: 100,
+  location: 300,
+  focus: 500,
+  cue: 300,
 } as const;
